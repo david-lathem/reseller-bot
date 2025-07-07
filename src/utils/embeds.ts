@@ -223,7 +223,11 @@ export const createOrderStatusEmbed = (guild: Guild, status: OrderStatus) => {
         value: `${status.added}/${status.amount}`,
         inline: true,
       },
-      { name: "Payload", value: status.payload, inline: false }
+      {
+        name: "Payload",
+        value: `\`\`\`yaml\n${status.payload}\`\`\``,
+        inline: false,
+      }
     );
 
     embed.addFields({
