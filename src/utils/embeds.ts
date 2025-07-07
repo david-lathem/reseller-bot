@@ -145,7 +145,7 @@ export const createOrderStatusEmbed = (guild: Guild, status: OrderStatus) => {
   embed.addFields({ name: "Status", value: `\`\`\`${status.status}\`\`\`` });
 
   // Members
-  if ("type" in status) {
+  if ("type" in status && status.type !== "REACT") {
     title = `👥 Members`;
 
     embed.addFields(
@@ -184,7 +184,9 @@ export const createOrderStatusEmbed = (guild: Guild, status: OrderStatus) => {
     embed.addFields(
       {
         name: "React URL",
-        value: `https://discord.com/channels/${status.messageId}/${status.channelId}/${status.messageId}`,
+        value: `https://discord.com/channels/${status.messageId ?? "NONE"}/${
+          status.channelId ?? "NONE"
+        }/${status.messageId ?? "NONE"}`,
       },
       {
         name: "Added",

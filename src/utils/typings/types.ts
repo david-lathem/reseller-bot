@@ -124,12 +124,13 @@ export type MembersOrderStatus = BaseOrderStatus & {
 };
 
 export type EmojiOrderStatus = BaseOrderStatus & {
+  type: "REACT";
   created: number;
   value: string;
-  emoji: string;
-  serverId: string;
-  channelId: string;
-  messageId: string;
+  emoji: string| null;
+  serverId?: string;
+  channelId?: string;
+  messageId?: string;
   added: number;
   quantity: number;
   delay: number;
