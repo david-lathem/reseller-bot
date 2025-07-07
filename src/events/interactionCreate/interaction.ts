@@ -1,9 +1,9 @@
-import { BaseInteraction } from "discord.js";
+import { BaseInteraction, MessageFlags } from "discord.js";
 import { handleInteractionError } from "../../utils/interaction.js";
 
 export default async (interaction: BaseInteraction) => {
   try {
-    if (interaction.isChatInputCommand()) {
+    if (interaction.isChatInputCommand() && interaction.inCachedGuild()) {
       const command = interaction.client.commands.find(
         (c) => c.name === interaction.commandName
       );
@@ -32,7 +32,21 @@ export default async (interaction: BaseInteraction) => {
         }
       }
 
-      await command.execute(interaction);
+      // if (interaction.user.id !== process.env.BOT_OWNER_ID)
+      //   throw new Error("Unauthorized!");
+
+      await interaction.deferReply();
+      const embed = await command.execute(interaction);
+
+      const embedChannel = interaction.guild.channels.cache.get(
+        process.env.EMBEDS_CHANNEL_ID
+      );
+
+      // if (embedChannel?.isSendable()) {
+      // await embedChannel.send({ embeds: [embed] });
+
+      await interaction.editReply({ embeds: [embed] });
+      // }
     }
 
     if (interaction.isAutocomplete()) {
