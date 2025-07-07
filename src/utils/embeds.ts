@@ -182,14 +182,21 @@ export const createOrderStatusEmbed = (guild: Guild, status: OrderStatus) => {
   if ("value" in status && "quantity" in status) {
     title = `🔁 Emoji`;
     embed.addFields(
-      { name: "React URL", value: status.value },
+      {
+        name: "React URL",
+        value: `https://discord.com/channels/${status.messageId}/${status.channelId}/${status.messageId}`,
+      },
       {
         name: "Added",
         value: `${status.added}/${status.quantity}`,
         inline: true,
       }
     );
-    embed.addFields({ name: "Emoji", value: status.emoji, inline: true });
+    embed.addFields({
+      name: "Emoji",
+      value: `<${status.emoji}>`,
+      inline: true,
+    });
     embed.addFields({
       name: "Delay",
       value: `${status.delay}s`,
