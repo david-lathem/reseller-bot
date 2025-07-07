@@ -38,9 +38,9 @@ export default async (interaction: BaseInteraction) => {
       await interaction.deferReply();
       const embed = await command.execute(interaction);
 
-      const embedChannel = interaction.guild.channels.cache.get(
-        process.env.EMBEDS_CHANNEL_ID
-      );
+      // const embedChannel = interaction.guild.channels.cache.get(
+      //   process.env.EMBEDS_CHANNEL_ID
+      // );
 
       // if (embedChannel?.isSendable()) {
       // await embedChannel.send({ embeds: [embed] });
