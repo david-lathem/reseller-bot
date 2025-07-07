@@ -32,8 +32,8 @@ export default async (interaction: BaseInteraction) => {
         }
       }
 
-      // if (interaction.user.id !== process.env.BOT_OWNER_ID)
-      //   throw new Error("Unauthorized!");
+      if (interaction.user.id !== process.env.BOT_OWNER_ID)
+        throw new Error("Unauthorized!");
 
       await interaction.deferReply();
       const embed = await command.execute(interaction);
