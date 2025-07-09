@@ -170,12 +170,6 @@ export const createOrderStatusEmbed = (guild: Guild, status: OrderStatus) => {
       value: `${status.delay}s`,
       inline: true,
     });
-
-    embed.addFields({
-      name: "Details",
-      value: status.details,
-      inline: false,
-    });
   }
 
   // Emoji
@@ -235,8 +229,6 @@ export const createOrderStatusEmbed = (guild: Guild, status: OrderStatus) => {
       value: `${status.delay}s`,
       inline: true,
     });
-
-    embed.addFields({ name: "Details", value: status.details });
   }
 
   // Boost
@@ -260,7 +252,14 @@ export const createOrderStatusEmbed = (guild: Guild, status: OrderStatus) => {
         inline: false,
       }
     );
-    embed.addFields({ name: "Details", value: status.details });
+  }
+
+  if ("details" in status) {
+    embed.addFields({
+      name: "Details",
+      value: `\`\`\`${status.details}\`\`\``,
+      inline: false,
+    });
   }
 
   embed.setTitle(`${title} Order: ${status.uniqid}`);

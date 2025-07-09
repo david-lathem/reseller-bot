@@ -2,7 +2,7 @@ declare global {
   namespace NodeJS {
     interface ProcessEnv {
       TOKEN: string;
-      BOT_OWNER_ID: string;
+      BOT_OWNER_IDS: string;
       EMBEDS_CHANNEL_ID: string;
 
       RESELLER_API_BASE_URL: string;

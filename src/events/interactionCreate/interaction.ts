@@ -32,7 +32,7 @@ export default async (interaction: BaseInteraction) => {
         }
       }
 
-      if (interaction.user.id !== process.env.BOT_OWNER_ID)
+      if (!process.env.BOT_OWNER_IDS.split(",").includes(interaction.user.id))
         throw new Error("Unauthorized!");
 
       await interaction.deferReply();
