@@ -7,6 +7,7 @@ import {
   orderCreateResponse,
   OrderStatus,
 } from "./typings/types.js";
+import striptags from "striptags";
 
 export function buildBaseEmbed({
   guild,
@@ -257,7 +258,7 @@ export const createOrderStatusEmbed = (guild: Guild, status: OrderStatus) => {
   if ("details" in status) {
     embed.addFields({
       name: "Details",
-      value: `\`\`\`${status.details}\`\`\``,
+      value: `\`\`\`${striptags(status.details)}\`\`\``,
       inline: false,
     });
   }
