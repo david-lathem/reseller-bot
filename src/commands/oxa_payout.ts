@@ -23,7 +23,6 @@ export default {
       description: "Amount to send",
       type: 10, // number
       required: true,
-      min_value: 1,
     },
     {
       name: "network",

@@ -53,7 +53,7 @@ async function handleWebhookEvent(
   req: Request<{}, {}, OxaInvoiceStatusResponseData>,
   res: Response
 ) {
-  if (req.body.type === "invoice" && req.body.status === "PAID") {
+  if (req.body.type === "invoice" && req.body.status === "Paid") {
     console.log(req.body);
 
     const guild = client.guilds.cache.get(process.env.GUILD_ID)!;
