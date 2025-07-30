@@ -15,7 +15,7 @@ if (NODE_ENV === "development") app.use(morgan("dev"));
 
 app.use(
   express.json({
-    verify: (req: any, res, buf, enc) => {
+    verify: (req: customRequest, res, buf, enc) => {
       console.log(enc);
 
       req.rawBody = buf;
@@ -56,6 +56,8 @@ async function handleWebhookEvent(
   res: Response
 ) {
   if (req.body.type === "invoice") {
+    console.log(req.body);
+
     const guild = client.guilds.cache.get(process.env.GUILD_ID)!;
 
     const embed = generateOxaInvoiceStatusEmbed(guild, req.body, true);

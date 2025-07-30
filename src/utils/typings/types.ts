@@ -23,7 +23,7 @@ export interface extendedAPICommand
 }
 
 export interface customRequest extends Request {
-  rawBody: string;
+  rawBody: Buffer;
 }
 
 export interface BaseCustomFetchOptions {
