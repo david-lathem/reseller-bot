@@ -3,10 +3,21 @@ declare global {
     interface ProcessEnv {
       TOKEN: string;
       BOT_OWNER_IDS: string;
-      EMBEDS_CHANNEL_ID: string;
+      GUILD_ID: string;
+      LOGS_CHANNEL_ID: string;
+
+      // HTTP SERVER
+      PORT: string;
+      NODE_ENV: "production" | "development";
 
       RESELLER_API_BASE_URL: string;
       RESELLER_API_KEY: string;
+
+      // OXA_PAY
+      OXAPAY_API_BASE_URL: string;
+      OXAPAY_GENERAL_API_KEY: string;
+      OXAPAY_PAYOUT_API_KEY: string;
+      OXAPAY_MERCHANT_API_KEY: string;
     }
   }
 }

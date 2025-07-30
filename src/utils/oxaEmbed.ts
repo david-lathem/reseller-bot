@@ -1,0 +1,170 @@
+import { Guild, User } from "discord.js";
+import { buildBaseEmbed } from "./embeds.js";
+import {
+  OxaBalanceResponse,
+  OxaGenerateInvoiceResponse,
+  OxaInvoiceStatusResponse,
+  OxaInvoiceStatusResponseData,
+  OxaPayoutResponse,
+  OxaPayoutStatsResponse,
+} from "./typings/OxapayTypes.js";
+
+export function generateOxaBalanceEmbed(
+  guild: Guild,
+  response: OxaBalanceResponse
+) {
+  const balanceData = response.data;
+
+  const nonZeroBalances = Object.entries(balanceData).map(
+    ([currency, amount]) => ({
+      name: currency,
+      value: `\`${amount}\``,
+      inline: true,
+    })
+  );
+
+  return buildBaseEmbed({
+    guild,
+    title: "💰 OxaPay Wallet Balances",
+    fields: nonZeroBalances,
+  });
+}
+
+export function generateOxaPayoutEmbed(
+  guild: Guild,
+  response: OxaPayoutResponse
+) {
+  return buildBaseEmbed({
+    guild,
+    title: "📤 OxaPay Payout Created",
+    description: "The payout request has been submitted successfully.",
+    fields: [
+      {
+        name: "Track ID",
+        value: `\`${response.data.track_id}\``,
+      },
+      {
+        name: "Status",
+        value: `\`${response.data.status}\``,
+      },
+    ],
+  });
+}
+
+export function generateOxaPayoutStatsEmbed(
+  guild: Guild,
+  response: OxaPayoutStatsResponse
+) {
+  const d = response.data;
+  const dateFormatted = `<t:${Math.floor(d.date)}:f>`; // Discord timestamp
+
+  return buildBaseEmbed({
+    guild,
+    title: "📊 OxaPay Payout Stats",
+    fields: [
+      { name: "Track ID", value: `\`${d.track_id}\`` },
+      { name: "Status", value: `\`${d.status}\`` },
+      { name: "Amount", value: `\`${d.amount} ${d.currency}\`` },
+      { name: "Fee", value: `\`${d.fee} ${d.currency}\``, inline: true },
+      { name: "Address", value: `\`${d.address}\`` },
+      { name: "Network", value: `\`${d.network}\``, inline: true },
+
+      { name: "Memo", value: d.memo || "`N/A`", inline: true },
+      { name: "Description", value: d.description || "`N/A`" },
+      { name: "Date", value: dateFormatted },
+    ],
+  });
+}
+
+export function generateOxaInvoiceEmbed(
+  guild: Guild,
+  response: OxaGenerateInvoiceResponse
+) {
+  const { track_id, payment_url, date, expired_at } = response.data;
+
+  return buildBaseEmbed({
+    guild,
+    title: "🧾 Invoice Generated",
+    fields: [
+      { name: "Track ID", value: `\`${track_id}\`` },
+      { name: "Created", value: `<t:${Math.floor(date)}:f>`, inline: true },
+      {
+        name: "Expires",
+        value: `<t:${Math.floor(expired_at)}:f>`,
+        inline: true,
+      },
+      { name: "Payment Link", value: `[Click to Pay](${payment_url})` },
+    ],
+  });
+}
+
+export function generateOxaInvoiceStatusEmbed(
+  guild: Guild,
+  d: OxaInvoiceStatusResponseData,
+  isWebhook?: Boolean
+) {
+  const tx = d.txs[0]; // Assuming only 1 tx for now
+
+  const fields = [
+    { name: "Track ID", value: `\`${d.track_id}\`` },
+    { name: "Status", value: `\`${d.status.toUpperCase()}\`` },
+    { name: "Amount", value: `\`${d.amount} ${d.currency}\`` },
+
+    {
+      name: "Fee Paid by",
+      value: d.fee_paid_by_payer === 1 ? "Payer" : "Merchant",
+      inline: true,
+    },
+
+    { name: "Email", value: d.email || "`N/A`", inline: true },
+    { name: "Description", value: d.description || "`N/A`" },
+  ];
+
+  if (d.mixed_payment !== undefined)
+    fields.push({
+      name: "Mixed Payment",
+      value: d.mixed_payment ? "Yes" : "No",
+    });
+
+  fields.push({
+    name: "Created",
+    value: `<t:${Math.floor(d.date)}:f>`,
+    inline: true,
+  }); // just so dates come at end
+
+  if (d.expired_at)
+    fields.push({
+      name: "Expires",
+      value: `<t:${Math.floor(d.expired_at)}:f>`,
+      inline: true,
+    });
+
+  if (tx)
+    fields.push({
+      name: "Transaction",
+      value: `\`\`\`A payment of ${tx.amount ?? tx.received_amount} ${
+        tx.currency
+      } on ${
+        tx.network
+      } occurred\`\`\` [View TX »](https://www.blockchain.com/explorer?search=${
+        tx.tx_hash
+      })`,
+    });
+
+  return buildBaseEmbed({
+    guild,
+    title: isWebhook ? `🎯 Invoice Paid` : "📦 Invoice Payment Status",
+    fields,
+  });
+}
+
+export function generateInvoiceGenNotifierEmbed(
+  guild: Guild,
+  data: OxaGenerateInvoiceResponse,
+  user: User
+) {
+  return buildBaseEmbed({
+    guild,
+    description: `${user} generated an [invoice](${data.data.payment_url})`,
+  });
+}

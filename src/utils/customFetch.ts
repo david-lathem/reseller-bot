@@ -1,12 +1,34 @@
-import { customFetchOptions } from "./typings/types.js";
+import { OxaPayFetchOptions, ResellerAPIOptions } from "./typings/types.js";
 
-const customFetch = async <T>(options: customFetchOptions): Promise<T> => {
+const customFetch = async <T>(
+  options: ResellerAPIOptions | OxaPayFetchOptions
+): Promise<T> => {
   const fetchOptions: RequestInit = {
     method: options.method || "GET",
-    headers: {
-      Authorization: process.env.RESELLER_API_KEY,
-    },
+    headers: {},
   };
+
+  const authorizationHeader: Record<string, string> = {};
+  let baseURL = process.env.RESELLER_API_BASE_URL;
+
+  authorizationHeader["Authorization"] = process.env.RESELLER_API_KEY;
+
+  if (options.oxapay) {
+    baseURL = process.env.OXAPAY_API_BASE_URL;
+
+    if (options.apiKeyType === "General")
+      authorizationHeader["general_api_key"] =
+        process.env.OXAPAY_GENERAL_API_KEY;
+
+    if (options.apiKeyType === "Payout")
+      authorizationHeader["payout_api_key"] = process.env.OXAPAY_PAYOUT_API_KEY;
+
+    if (options.apiKeyType === "Merchant")
+      authorizationHeader["merchant_api_key"] =
+        process.env.OXAPAY_MERCHANT_API_KEY;
+  }
+
+  fetchOptions.headers = { ...fetchOptions.headers, ...authorizationHeader };
 
   if (options.body) fetchOptions.body = JSON.stringify(options.body);
 
@@ -16,22 +38,20 @@ const customFetch = async <T>(options: customFetchOptions): Promise<T> => {
       ...options.additionalHeaders,
     };
 
-  const res = await fetch(
-    `${process.env.RESELLER_API_BASE_URL}${options.url}`,
-    fetchOptions
-  );
+  const res = await fetch(`${baseURL}${options.url}`, fetchOptions);
 
   let data;
   if (res.headers.get("content-type")?.includes("text"))
     data = await res.text();
   else data = await res.json();
 
-  console.log(res);
-  console.log(data);
-
   if (!res.ok) {
-    if (data.message || data.error) throw new Error(data.message ?? data.error);
-    throw new Error("Something went wrong");
+    let message = "Something went wrong"; // default
+
+    if (data.message || data.error) message = data.message ?? data.error; // for reseller
+    if (options.oxapay) message = `${data.message} ${data.error.message || ""}`; // if oxapay, will override, error can be empty obj
+
+    throw new Error(message);
   }
 
   return data;

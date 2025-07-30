@@ -8,6 +8,7 @@ import {
   Guild,
   RESTPostAPIChatInputApplicationCommandsJSONBody,
 } from "discord.js";
+import { Request } from "express";
 
 export interface extendedAPICommand
   extends RESTPostAPIChatInputApplicationCommandsJSONBody {
@@ -21,11 +22,24 @@ export interface extendedAPICommand
   ): Promise<EmbedBuilder>;
 }
 
-export interface customFetchOptions {
+export interface customRequest extends Request {
+  rawBody: string;
+}
+
+export interface BaseCustomFetchOptions {
   url: string;
   method?: "GET" | "POST" | "PUT" | "DELETE";
   body?: any[] | Record<any, any>;
   additionalHeaders?: Record<any, any>;
+}
+
+export interface ResellerAPIOptions extends BaseCustomFetchOptions {
+  oxapay?: undefined;
+}
+
+export interface OxaPayFetchOptions extends BaseCustomFetchOptions {
+  oxapay: true;
+  apiKeyType: "General" | "Merchant" | "Payout";
 }
 
 export interface GetBalanceResponse {
@@ -127,7 +141,7 @@ export type EmojiOrderStatus = BaseOrderStatus & {
   type: "REACT";
   created: number;
   value: string;
-  emoji: string| null;
+  emoji: string | null;
   serverId?: string;
   channelId?: string;
   messageId?: string;
