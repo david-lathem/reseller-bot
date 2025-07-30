@@ -15,9 +15,7 @@ if (NODE_ENV === "development") app.use(morgan("dev"));
 
 app.use(
   express.json({
-    verify: (req: customRequest, res, buf, enc) => {
-      console.log(enc);
-
+    verify: (req: customRequest, res, buf) => {
       req.rawBody = buf;
     },
   })
@@ -63,7 +61,10 @@ async function handleWebhookEvent(
     const embed = generateOxaInvoiceStatusEmbed(guild, req.body, true);
 
     await sendLogInChannel({ embeds: [embed] }, process.env.LOGS_CHANNEL_ID);
-    await sendLogInChannel({ embeds: [embed] }, req.body.order_id);
+    await sendLogInChannel(
+      { embeds: [embed] },
+      req.body.order_id.split("-")[0]
+    );
   }
 
   res.send("Success");

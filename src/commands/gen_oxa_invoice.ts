@@ -101,7 +101,7 @@ export default {
       auto_withdrawal,
       mixed_payment,
       email,
-      order_id: interaction.channel?.id,
+      order_id: `${interaction.channel?.id}-${interaction.user.id}`,
       thanks_message,
       description,
       sandbox: process.env.NODE_ENV === "development",
