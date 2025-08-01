@@ -1,8 +1,14 @@
 import crypto from "node:crypto";
 import express, { Request, Response, NextFunction } from "express";
 import morgan from "morgan";
-import { OxaInvoiceStatusResponseData } from "../utils/typings/OxapayTypes.js";
-import { generateOxaInvoiceStatusEmbed } from "../utils/oxaEmbed.js";
+import {
+  OxaInvoiceStatusResponseData,
+  OxaPayoutStatsData,
+} from "../utils/typings/OxapayTypes.js";
+import {
+  generateOxaInvoiceStatusEmbed,
+  generateOxaPayoutStatsEmbed,
+} from "../utils/oxaEmbed.js";
 import client from "../client.js";
 import { sendLogInChannel } from "../utils/logs.js";
 import { customRequest } from "../utils/typings/types.js";
@@ -50,12 +56,11 @@ async function handleOxaPaySigning(
 }
 
 async function handleWebhookEvent(
-  req: Request<{}, {}, OxaInvoiceStatusResponseData>,
+  req: Request<{}, {}, OxaInvoiceStatusResponseData | OxaPayoutStatsData>,
   res: Response
 ) {
+  console.log(req.body);
   if (req.body.type === "invoice" && req.body.status === "Paid") {
-    console.log(req.body);
-
     const guild = client.guilds.cache.get(process.env.GUILD_ID)!;
 
     const embed = generateOxaInvoiceStatusEmbed(guild, req.body, true);
@@ -64,6 +69,17 @@ async function handleWebhookEvent(
     await sendLogInChannel(
       { embeds: [embed] },
       req.body.order_id.split("-")[0]
+    );
+  }
+
+  if (req.body.type === "payout" && req.body.status === "Confirmed") {
+    const guild = client.guilds.cache.get(process.env.GUILD_ID)!;
+
+    const embed = generateOxaPayoutStatsEmbed(guild, req.body, true);
+
+    await sendLogInChannel(
+      { embeds: [embed] },
+      process.env.PAYOUT_LOGS_CHANNEL_ID
     );
   }
 

@@ -38,7 +38,7 @@ export default {
     //   version: "1.0.0",
     // };
 
-    const embed = generateOxaPayoutStatsEmbed(interaction.guild, res);
+    const embed = generateOxaPayoutStatsEmbed(interaction.guild, res.data);
     return embed;
   },
 } satisfies extendedAPICommand;

@@ -3,10 +3,9 @@ import { buildBaseEmbed } from "./embeds.js";
 import {
   OxaBalanceResponse,
   OxaGenerateInvoiceResponse,
-  OxaInvoiceStatusResponse,
   OxaInvoiceStatusResponseData,
   OxaPayoutResponse,
-  OxaPayoutStatsResponse,
+  OxaPayoutStatsData,
 } from "./typings/OxapayTypes.js";
 
 export function generateOxaBalanceEmbed(
@@ -53,26 +52,37 @@ export function generateOxaPayoutEmbed(
 
 export function generateOxaPayoutStatsEmbed(
   guild: Guild,
-  response: OxaPayoutStatsResponse
+  d: OxaPayoutStatsData,
+  isWebhook?: Boolean
 ) {
-  const d = response.data;
   const dateFormatted = `<t:${Math.floor(d.date)}:f>`; // Discord timestamp
+
+  const fields = [
+    { name: "Track ID", value: `\`${d.track_id}\`` },
+    { name: "Status", value: `\`${d.status}\`` },
+    { name: "Amount", value: `\`${d.amount} ${d.currency}\`` },
+    { name: "Address", value: `\`${d.address}\`` },
+    { name: "Network", value: `\`${d.network}\``, inline: true },
+
+    { name: "Description", value: d.description || "`N/A`" },
+  ];
+
+  if (d.fee)
+    fields.push({
+      name: "Fee",
+      value: `\`${d.fee} ${d.currency}\``,
+      inline: true,
+    });
+
+  if (d.memo)
+    fields.push({ name: "Memo", value: d.memo || "`N/A`", inline: true });
+
+  fields.push({ name: "Date", value: dateFormatted });
 
   return buildBaseEmbed({
     guild,
-    title: "📊 OxaPay Payout Stats",
-    fields: [
-      { name: "Track ID", value: `\`${d.track_id}\`` },
-      { name: "Status", value: `\`${d.status}\`` },
-      { name: "Amount", value: `\`${d.amount} ${d.currency}\`` },
-      { name: "Fee", value: `\`${d.fee} ${d.currency}\``, inline: true },
-      { name: "Address", value: `\`${d.address}\`` },
-      { name: "Network", value: `\`${d.network}\``, inline: true },
-
-      { name: "Memo", value: d.memo || "`N/A`", inline: true },
-      { name: "Description", value: d.description || "`N/A`" },
-      { name: "Date", value: dateFormatted },
-    ],
+    title: isWebhook ? "🎄 OxaPay Payout Confirmed" : "📊 OxaPay Payout Stats",
+    fields,
   });
 }
 

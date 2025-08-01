@@ -61,17 +61,19 @@ export interface OxaPayoutPayload {
 }
 
 export interface OxaPayoutStatsData {
+  // possible undefined dont come in the webhook
+  type: "payout";
   track_id: string;
   address: string;
   currency: string;
   network: string;
   amount: number;
-  fee: number;
+  fee?: number;
   status: string;
   tx_hash: string;
   description: string;
-  internal: boolean;
-  memo: string;
+  internal?: boolean;
+  memo?: string;
   date: number; // UNIX timestamp
 }
 
@@ -125,7 +127,7 @@ export interface OxaInvoiceTx {
 export interface OxaInvoiceStatusResponseData {
   //optional fields occur in API response or webhook NOT both
   track_id: string;
-  type: "invoice" | "payout";
+  type: "invoice";
   amount: number;
   currency: string;
   status: string;

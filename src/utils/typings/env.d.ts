@@ -5,6 +5,7 @@ declare global {
       BOT_OWNER_IDS: string;
       GUILD_ID: string;
       LOGS_CHANNEL_ID: string;
+      PAYOUT_LOGS_CHANNEL_ID: string;
 
       // HTTP SERVER
       PORT: string;
