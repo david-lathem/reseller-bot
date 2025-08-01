@@ -1,4 +1,4 @@
-import { BaseInteraction, MessageFlags } from "discord.js";
+import { BaseInteraction } from "discord.js";
 import { handleInteractionError } from "../../utils/interaction.js";
 
 export default async (interaction: BaseInteraction) => {

@@ -35,15 +35,16 @@ app.use((req: Request, res: Response) => {
 });
 
 async function handleOxaPaySigning(
-  req: Request,
+  req: Request<{}, {}, OxaInvoiceStatusResponseData | OxaPayoutStatsData>,
   res: Response,
   next: NextFunction
 ) {
+  let apiKey: string = process.env.OXAPAY_MERCHANT_API_KEY;
+
+  if (req.body.type === "payout") apiKey = process.env.OXAPAY_PAYOUT_API_KEY;
+
   const requestHMAC = req.headers["hmac"];
-  const ourHMAC = crypto.createHmac(
-    "sha512",
-    process.env.OXAPAY_MERCHANT_API_KEY
-  );
+  const ourHMAC = crypto.createHmac("sha512", apiKey);
 
   ourHMAC.update((req as customRequest).rawBody);
 
