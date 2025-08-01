@@ -5,6 +5,8 @@ import { generateOxaBalanceEmbed } from "../utils/oxaEmbed.js";
 export default {
   name: "oxa_balance",
   description: "Check OxaPay balance",
+  authorizedRoleOnly: true,
+
   execute: async (interaction) => {
     const res = await fetchOxaBalance();
 

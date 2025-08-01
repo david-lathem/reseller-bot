@@ -3,6 +3,7 @@ declare global {
     interface ProcessEnv {
       TOKEN: string;
       BOT_OWNER_IDS: string;
+      AUTHORIZED_ROLE_IDS: string;
       GUILD_ID: string;
       LOGS_CHANNEL_ID: string;
       PAYOUT_LOGS_CHANNEL_ID: string;

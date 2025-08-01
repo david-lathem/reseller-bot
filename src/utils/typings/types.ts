@@ -14,6 +14,7 @@ export interface extendedAPICommand
   extends RESTPostAPIChatInputApplicationCommandsJSONBody {
   permissionRequired?: bigint | Array<bigint>;
   guildOnly?: Boolean;
+  authorizedRoleOnly?: Boolean;
   autocomplete?(
     interaction: AutocompleteInteraction
   ): Promise<Array<ApplicationCommandOptionChoiceData | string>>;

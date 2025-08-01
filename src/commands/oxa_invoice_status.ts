@@ -5,6 +5,8 @@ import { generateOxaInvoiceStatusEmbed } from "../utils/oxaEmbed.js";
 export default {
   name: "oxa_invoice_status",
   description: "Check the status of a payment invoice",
+  authorizedRoleOnly: true,
+
   options: [
     {
       name: "track_id",

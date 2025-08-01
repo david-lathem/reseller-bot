@@ -32,8 +32,19 @@ export default async (interaction: BaseInteraction) => {
         }
       }
 
-      if (!process.env.BOT_OWNER_IDS.split(",").includes(interaction.user.id))
+      if (
+        !command.authorizedRoleOnly &&
+        !process.env.BOT_OWNER_IDS.split(",").includes(interaction.user.id)
+      )
         throw new Error("Unauthorized!");
+
+      if (
+        command.authorizedRoleOnly &&
+        !process.env.AUTHORIZED_ROLE_IDS.split(",").some((r) =>
+          interaction.member.roles.cache.has(r)
+        )
+      )
+        throw new Error("Owner only!");
 
       await interaction.deferReply();
       const embed = await command.execute(interaction);

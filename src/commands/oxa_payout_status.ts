@@ -5,6 +5,7 @@ import { generateOxaPayoutStatsEmbed } from "../utils/oxaEmbed.js";
 export default {
   name: "oxa_payout_status",
   description: "Check payout status via track ID",
+  authorizedRoleOnly: true,
   options: [
     {
       name: "track_id",

@@ -9,6 +9,8 @@ import { sendLogInChannel } from "../utils/logs.js";
 export default {
   name: "gen_oxa_invoice",
   description: "Generate a payment invoice via OxaPay",
+  authorizedRoleOnly: true,
+
   options: [
     {
       name: "amount",
