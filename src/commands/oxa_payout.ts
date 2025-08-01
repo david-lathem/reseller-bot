@@ -1,6 +1,10 @@
 import { extendedAPICommand } from "../utils/typings/types.js";
 import { sendOxaPayout } from "../utils/oxaAPI.js";
-import { generateOxaPayoutEmbed } from "../utils/oxaEmbed.js";
+import {
+  generateOxaPayoutEmbed,
+  generatePayoutGenNotifierEmbed,
+} from "../utils/oxaEmbed.js";
+import { sendLogInChannel } from "../utils/logs.js";
 
 export default {
   name: "oxa_payout",
@@ -68,6 +72,18 @@ export default {
     //   status: 200,
     //   version: "1.0.0",
     // };
+
+    const notiferEmbed = generatePayoutGenNotifierEmbed(
+      interaction.guild,
+      interaction.user,
+      interaction.channel!
+    );
+
+    await sendLogInChannel(
+      { embeds: [notiferEmbed] },
+      process.env.PAYOUT_LOGS_CHANNEL_ID
+    );
+
     const embed = generateOxaPayoutEmbed(interaction.guild, res);
 
     return embed;

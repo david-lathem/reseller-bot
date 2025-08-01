@@ -1,4 +1,4 @@
-import { Guild, User } from "discord.js";
+import { Guild, GuildTextBasedChannel, User } from "discord.js";
 import { buildBaseEmbed } from "./embeds.js";
 import {
   OxaBalanceResponse,
@@ -182,5 +182,16 @@ export function generateInvoiceGenNotifierEmbed(
   return buildBaseEmbed({
     guild,
     description: `${user} generated an [invoice](${data.data.payment_url})`,
+  });
+}
+
+export function generatePayoutGenNotifierEmbed(
+  guild: Guild,
+  user: User,
+  channel: GuildTextBasedChannel
+) {
+  return buildBaseEmbed({
+    guild,
+    description: `${user} generated a payout in ${channel}`,
   });
 }
