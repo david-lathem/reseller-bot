@@ -39,6 +39,8 @@ async function handleOxaPaySigning(
   res: Response,
   next: NextFunction
 ) {
+  console.log(req.body);
+
   let apiKey: string = process.env.OXAPAY_MERCHANT_API_KEY;
 
   if (req.body.type === "payout") apiKey = process.env.OXAPAY_PAYOUT_API_KEY;
