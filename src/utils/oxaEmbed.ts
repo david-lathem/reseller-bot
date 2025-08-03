@@ -35,7 +35,7 @@ export function generateOxaPayoutEmbed(
 ) {
   return buildBaseEmbed({
     guild,
-    title: "📤 OxaPay Payout Created",
+    title: "📤 Payout Created",
     description: "The payout request has been submitted successfully.",
     fields: [
       {
