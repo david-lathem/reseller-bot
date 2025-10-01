@@ -4,6 +4,7 @@ import {
 } from "../utils/typings/types.js";
 import { createBoostOrder } from "../utils/resellerAPI.js";
 import { createOrderEmbed } from "../utils/embeds.js";
+import { BOOST_DURATION } from "../utils/constants.js";
 
 export default {
   name: "create_boost",
@@ -16,8 +17,8 @@ export default {
       type: 3,
       required: true,
       choices: [
-        { name: "1 Month", value: "ONE_MONTH" },
-        { name: "3 Months", value: "THREE_MONTH" },
+        { name: "1 Month", value: BOOST_DURATION.ONE_MONTH },
+        { name: "3 Months", value: BOOST_DURATION.THREE_MONTH },
       ],
     },
     {

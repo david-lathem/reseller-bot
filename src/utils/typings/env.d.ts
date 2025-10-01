@@ -15,6 +15,9 @@ declare global {
       RESELLER_API_BASE_URL: string;
       RESELLER_API_KEY: string;
 
+      // SellHub
+      SELLHUB_API_BASE_URL: string;
+      SELLHUB_API_KEY: string;
       // OXA_PAY
       OXAPAY_API_BASE_URL: string;
       OXAPAY_GENERAL_API_KEY: string;

@@ -35,11 +35,14 @@ export interface BaseCustomFetchOptions {
 }
 
 export interface ResellerAPIOptions extends BaseCustomFetchOptions {
-  oxapay?: undefined;
+  type: "reseller";
+}
+export interface SellHubAPIOptions extends BaseCustomFetchOptions {
+  type: "sellhub";
 }
 
 export interface OxaPayFetchOptions extends BaseCustomFetchOptions {
-  oxapay: true;
+  type: "oxapay";
   apiKeyType: "General" | "Merchant" | "Payout";
 }
 

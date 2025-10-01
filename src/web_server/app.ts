@@ -12,6 +12,7 @@ import {
 import client from "../client.js";
 import { sendLogInChannel } from "../utils/logs.js";
 import { customRequest } from "../utils/typings/types.js";
+import { handleSellHubOrder } from "../utils/sellhub.js";
 
 const app = express();
 
@@ -27,7 +28,8 @@ app.use(
   })
 );
 
-app.post("/oxapay/callback", handleOxaPaySigning, handleWebhookEvent);
+app.post("/oxapay/callback", handleOxaPaySigning, handleOxaWebhookEvent);
+app.post("/sellhub/fulfill-order", handleSellHubOrder);
 
 // Handle undefined routes
 app.use((req: Request, res: Response) => {
@@ -58,7 +60,7 @@ async function handleOxaPaySigning(
   next();
 }
 
-async function handleWebhookEvent(
+async function handleOxaWebhookEvent(
   req: Request<{}, {}, OxaInvoiceStatusResponseData | OxaPayoutStatsData>,
   res: Response
 ) {

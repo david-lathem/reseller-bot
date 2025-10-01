@@ -17,13 +17,14 @@ import {
 // GET Requests
 
 export const fetchBalance = async (): Promise<GetBalanceResponse> =>
-  customFetch<GetBalanceResponse>({ url: "/balance" });
+  customFetch<GetBalanceResponse>({ type: "reseller", url: "/balance" });
 
 export const fetchMembers = async (
   service: OAUTHMemberType,
   guildId: string
 ): Promise<GetMembersResponse> =>
   customFetch<GetMembersResponse>({
+    type: "reseller",
     url: `/check?service=${service}&id=${guildId}`,
   });
 
@@ -32,6 +33,7 @@ export const fetchAmountAvailability = async (
   uniqid: string
 ): Promise<AvailableAmountResponse> => {
   return customFetch<AvailableAmountResponse>({
+    type: "reseller",
     url: `/check?service=${service}&uniqid=${uniqid}`,
   });
 };
@@ -40,6 +42,7 @@ export const fetchOrderStatus = async (
   uniqid: string
 ): Promise<OrderStatus> => {
   return customFetch({
+    type: "reseller",
     url: `/status?uniqid=${uniqid}`,
   });
 };
@@ -49,6 +52,7 @@ export const createOAuthOrder = async (
   input: CreateMemberOrderRequest
 ): Promise<orderCreateResponse> => {
   return customFetch<orderCreateResponse>({
+    type: "reseller",
     url: "/order",
     method: "POST",
     additionalHeaders: {
@@ -63,6 +67,7 @@ export const createEmojiButtonOrder = async (
   payload: CreateEmojiButtonOrderPayload
 ): Promise<CreateEmojiButtonOrderResponse> => {
   return customFetch({
+    type: "reseller",
     url: "/order",
     method: "POST",
     additionalHeaders: { "Content-Type": "application/json" },
@@ -83,6 +88,7 @@ export const createBoostOrder = async (
   };
 
   return customFetch<orderCreateResponse>({
+    type: "reseller",
     url: `/order`,
     method: "POST",
     body: payload,

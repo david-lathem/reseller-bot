@@ -13,7 +13,7 @@ import {
 export const fetchOxaBalance = async (): Promise<OxaBalanceResponse> =>
   customFetch<OxaBalanceResponse>({
     url: "/general/account/balance",
-    oxapay: true,
+    type: "oxapay",
     apiKeyType: "General",
   });
 
@@ -22,7 +22,7 @@ export const fetchOxaPayoutStats = async (
 ): Promise<OxaPayoutStatsResponse> =>
   customFetch<OxaPayoutStatsResponse>({
     url: `/payout/${trackId}`,
-    oxapay: true,
+    type: "oxapay",
     apiKeyType: "Payout",
   });
 
@@ -31,7 +31,7 @@ export const fetchOxaInvoiceStatus = async (
 ): Promise<OxaInvoiceStatusResponse> =>
   customFetch<OxaInvoiceStatusResponse>({
     url: `/payment/${trackId}`,
-    oxapay: true,
+    type: "oxapay",
     apiKeyType: "Merchant",
   });
 
@@ -44,7 +44,7 @@ export const sendOxaPayout = async (
     method: "POST",
     body: payload,
     apiKeyType: "Payout",
-    oxapay: true,
+    type: "oxapay",
   });
 
 export const generateOxaInvoice = async (
@@ -55,5 +55,5 @@ export const generateOxaInvoice = async (
     method: "POST",
     body: payload,
     apiKeyType: "Merchant",
-    oxapay: true,
+    type: "oxapay",
   });

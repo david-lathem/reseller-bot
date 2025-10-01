@@ -1,7 +1,11 @@
-import { OxaPayFetchOptions, ResellerAPIOptions } from "./typings/types.js";
+import {
+  OxaPayFetchOptions,
+  ResellerAPIOptions,
+  SellHubAPIOptions,
+} from "./typings/types.js";
 
 const customFetch = async <T>(
-  options: ResellerAPIOptions | OxaPayFetchOptions
+  options: ResellerAPIOptions | OxaPayFetchOptions | SellHubAPIOptions
 ): Promise<T> => {
   const fetchOptions: RequestInit = {
     method: options.method || "GET",
@@ -13,7 +17,7 @@ const customFetch = async <T>(
 
   authorizationHeader["Authorization"] = process.env.RESELLER_API_KEY;
 
-  if (options.oxapay) {
+  if (options.type === "oxapay") {
     baseURL = process.env.OXAPAY_API_BASE_URL;
 
     if (options.apiKeyType === "General")
@@ -26,6 +30,12 @@ const customFetch = async <T>(
     if (options.apiKeyType === "Merchant")
       authorizationHeader["merchant_api_key"] =
         process.env.OXAPAY_MERCHANT_API_KEY;
+  }
+
+  if (options.type === "sellhub") {
+    baseURL = process.env.SELLHUB_API_BASE_URL;
+
+    authorizationHeader["Authorization"] = process.env.SELLHUB_API_KEY;
   }
 
   fetchOptions.headers = { ...fetchOptions.headers, ...authorizationHeader };
@@ -49,7 +59,8 @@ const customFetch = async <T>(
     let message = "Something went wrong"; // default
 
     if (data.message || data.error) message = data.message ?? data.error; // for reseller
-    if (options.oxapay) message = `${data.message} ${data.error.message || ""}`; // if oxapay, will override, error can be empty obj
+    if (options.type === "oxapay")
+      message = `${data.message} ${data.error.message || ""}`; // if oxapay, will override, error can be empty obj
 
     throw new Error(message);
   }
