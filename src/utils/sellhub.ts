@@ -10,6 +10,8 @@ export const handleSellHubOrder = async (
   res: Response
 ) => {
   const { body } = req;
+  console.log(req.headers);
+
   console.log(body);
 
   try {
