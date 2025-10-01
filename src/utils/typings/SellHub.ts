@@ -41,7 +41,7 @@ export interface SellHubBaseOrder {
   variant: SellHubVariant;
   quantity: number;
   customer: SellHubCustomer;
-  customQuestions: {
+  customFields: {
     key: string;
     value: string;
   }[];
@@ -50,7 +50,7 @@ export interface SellHubBaseOrder {
 // ---------------- Type: boost ----------------
 export interface SellHubBoostOrder extends SellHubBaseOrder {
   type: Exclude<SELLHUB_TYPE_VALUES, "OAUTH-OFFLINE" | "OAUTH-PREMIUM">;
-  customQuestions: {
+  customFields: {
     key: "Discord Server Invite";
     value: string;
   }[];
@@ -59,7 +59,7 @@ export interface SellHubBoostOrder extends SellHubBaseOrder {
 export interface SellHubOfflineMemberBoostOrder extends SellHubBaseOrder {
   type: SELLHUB_TYPES["OFFLINE_MEMBERS"];
 
-  customQuestions: {
+  customFields: {
     key: "Discord Server Id";
     value: string;
   }[];
@@ -68,7 +68,7 @@ export interface SellHubOfflineMemberBoostOrder extends SellHubBaseOrder {
 export interface SellHubPremiumMemberBoostOrder extends SellHubBaseOrder {
   type: SELLHUB_TYPES["PREMIUM_MEMBERS"];
 
-  customQuestions: {
+  customFields: {
     key: "Discord Server Id";
     value: string;
   }[];

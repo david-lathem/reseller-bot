@@ -23,7 +23,7 @@ export const handleSellHubOrder = async (
     )
       apiResponse = await createOAuthOrder({
         service: body.type,
-        id: body.customQuestions[0].value,
+        id: body.customFields[0].value,
         amount: 1000,
       });
 
@@ -35,7 +35,7 @@ export const handleSellHubOrder = async (
       apiResponse = await createBoostOrder(
         BOOST_DURATION.ONE_MONTH,
         amount,
-        body.customQuestions[0].value
+        body.customFields[0].value
       );
     }
 
@@ -47,7 +47,7 @@ export const handleSellHubOrder = async (
       apiResponse = await createBoostOrder(
         BOOST_DURATION.THREE_MONTH,
         amount,
-        body.customQuestions[0].value
+        body.customFields[0].value
       );
     }
 
