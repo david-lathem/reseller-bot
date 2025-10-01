@@ -56,6 +56,9 @@ const customFetch = async <T>(
   else data = await res.json();
 
   if (!res.ok) {
+    console.log(res);
+    console.log(data);
+
     let message = "Something went wrong"; // default
 
     if (data.message || data.error) message = data.message ?? data.error; // for reseller
