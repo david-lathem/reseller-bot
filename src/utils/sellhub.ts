@@ -56,11 +56,7 @@ export const handleSellHubOrder = async (
     // }
 
     res.send(
-      `Please invite the bot here for it to work: 
-<a href="${apiResponse.bot_invite}" target="_blank" rel="noopener noreferrer">
-  Invite Bot
-</a>
-`
+      `Please invite the bot here for it to work: ${apiResponse?.bot_invite}`
     );
   } catch (error) {
     console.error(error);
