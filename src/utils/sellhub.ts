@@ -16,47 +16,36 @@ export const handleSellHubOrder = async (
   try {
     addType(body);
 
-    let apiResponse: orderCreateResponse = {
-      cost: 2,
-      bot_invite: "https://boosted-up.sellhub.cx/",
-      uniqid: "https://boosted-up.sellhub.cx/",
-    };
-    // if (
-    //   body.type === SELLHUB_TYPES_CONST.PREMIUM_MEMBERS ||
-    //   body.type === SELLHUB_TYPES_CONST.OFFLINE_MEMBERS
-    // )
-    //   apiResponse = await createOAuthOrder({
-    //     service: body.type,
-    //     id: body.customFields[0].value,
-    //     amount: 1000,
-    //   });
+    let apiResponse!: orderCreateResponse;
 
-    // if (
-    //   body.type === SELLHUB_TYPES_CONST.ONE_MONTH_BOOST_14 ||
-    //   body.type === SELLHUB_TYPES_CONST.ONE_MONTH_BOOST_20
-    // ) {
-    //   const amount = Number(body.type.split("_").at(-1));
-    //   apiResponse = await createBoostOrder(
-    //     BOOST_DURATION.ONE_MONTH,
-    //     amount,
-    //     body.customFields[0].value
-    //   );
-    // }
+    if (
+      body.type === SELLHUB_TYPES_CONST.PREMIUM_MEMBERS ||
+      body.type === SELLHUB_TYPES_CONST.OFFLINE_MEMBERS
+    )
+      apiResponse = await createOAuthOrder({
+        service: body.type,
+        id: body.customFields[0].value,
+        amount: 100,
+      });
 
-    // if (
-    //   body.type === SELLHUB_TYPES_CONST.THREE_MONTH_BOOST_14 ||
-    //   body.type === SELLHUB_TYPES_CONST.THREE_MONTH_BOOST_20
-    // ) {
-    //   const amount = Number(body.type.split("_").at(-1));
-    //   apiResponse = await createBoostOrder(
-    //     BOOST_DURATION.THREE_MONTH,
-    //     amount,
-    //     body.customFields[0].value
-    //   );
-    // }
+    if (body.type === SELLHUB_TYPES_CONST.ONE_MONTH_BOOST) {
+      apiResponse = await createBoostOrder(
+        BOOST_DURATION.ONE_MONTH,
+        100,
+        body.customFields[0].value
+      );
+    }
+
+    if (body.type === SELLHUB_TYPES_CONST.THREE_MONTH_BOOST) {
+      apiResponse = await createBoostOrder(
+        BOOST_DURATION.THREE_MONTH,
+        100,
+        body.customFields[0].value
+      );
+    }
 
     res.send(
-      `Please invite the bot here for it to work: ${apiResponse?.bot_invite}`
+      `Please invite the bot here for it to work: ${apiResponse.bot_invite}`
     );
   } catch (error) {
     console.error(error);
