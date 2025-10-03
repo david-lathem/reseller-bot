@@ -16,7 +16,11 @@ export const handleSellHubOrder = async (
   try {
     addType(body);
 
-    let apiResponse!: orderCreateResponse;
+    let apiResponse: orderCreateResponse = {
+      bot_invite: "",
+      cost: 0,
+      uniqid: "",
+    }; // dummy placeholder
 
     if (
       body.type === SELLHUB_TYPES_CONST.PREMIUM_MEMBERS ||
@@ -45,7 +49,7 @@ export const handleSellHubOrder = async (
     }
 
     res.send(
-      `Please invite the bot here for it to work: ${apiResponse.bot_invite}`
+      `Please invite our discord bot here for your order to be processed: ${apiResponse.bot_invite}`
     );
   } catch (error) {
     console.error(error);
