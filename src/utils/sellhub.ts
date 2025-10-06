@@ -52,7 +52,7 @@ export const handleSellHubOrder = async (
     // }
 
     res.send(
-      `Please invite our discord bot here for your order to be processed: [here](${apiResponse.bot_invite})`
+      `Please invite our discord bot here for your order to be processed: ${apiResponse.bot_invite}`
     );
   } catch (error) {
     console.error(error);
