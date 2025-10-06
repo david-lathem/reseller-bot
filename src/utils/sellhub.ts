@@ -25,31 +25,31 @@ export const handleSellHubOrder = async (
 
     const amountToMultiply = body.quantity;
 
-    // if (
-    //   body.type === SELLHUB_TYPES_CONST.PREMIUM_MEMBERS ||
-    //   body.type === SELLHUB_TYPES_CONST.OFFLINE_MEMBERS
-    // )
-    //   apiResponse = await createOAuthOrder({
-    //     service: body.type,
-    //     id: body.customFields[0].value,
-    //     amount: amountToMultiply * 20,
-    //   });
+    if (
+      body.type === SELLHUB_TYPES_CONST.PREMIUM_MEMBERS ||
+      body.type === SELLHUB_TYPES_CONST.OFFLINE_MEMBERS
+    )
+      apiResponse = await createOAuthOrder({
+        service: body.type,
+        id: body.customFields[0].value,
+        amount: amountToMultiply * 20,
+      });
 
-    // if (body.type === SELLHUB_TYPES_CONST.ONE_MONTH_BOOST) {
-    //   apiResponse = await createBoostOrder(
-    //     BOOST_DURATION.ONE_MONTH,
-    //     amountToMultiply,
-    //     body.customFields[0].value
-    //   );
-    // }
+    if (body.type === SELLHUB_TYPES_CONST.ONE_MONTH_BOOST) {
+      apiResponse = await createBoostOrder(
+        BOOST_DURATION.ONE_MONTH,
+        amountToMultiply,
+        body.customFields[0].value
+      );
+    }
 
-    // if (body.type === SELLHUB_TYPES_CONST.THREE_MONTH_BOOST) {
-    //   apiResponse = await createBoostOrder(
-    //     BOOST_DURATION.THREE_MONTH,
-    //     amountToMultiply,
-    //     body.customFields[0].value
-    //   );
-    // }
+    if (body.type === SELLHUB_TYPES_CONST.THREE_MONTH_BOOST) {
+      apiResponse = await createBoostOrder(
+        BOOST_DURATION.THREE_MONTH,
+        amountToMultiply,
+        body.customFields[0].value
+      );
+    }
 
     res.send(
       `Please invite our discord bot here for your order to be processed: ${apiResponse.bot_invite}`

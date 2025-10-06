@@ -3,3 +3,24 @@ node_modules
 dist
 *lock.json
 database.db
+
+div class="flex flex-col mt-4 gap-1">
+                        {% for key in item.activationKey %}
+                          <div class="text-xs">{{ key.key }}</div>
+                        {% endfor %}
+                      </div>
+
+<div class="flex flex-col mt-4 gap-1">
+  {% for key in item.activationKey %}
+    {% assign parts = key.key | split: ':' %}
+    {% assign before = parts | first %}
+    {% assign after = parts | last %}
+    <div class="text-xs">
+      {{ before }}:
+      <a href="{{ after }}" target="_blank" class="text-blue-500 underline break-all">
+        {{ after }}
+      </a>
+    </div>
+  {% endfor %}
+</div>
+
