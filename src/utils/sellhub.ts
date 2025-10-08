@@ -32,7 +32,7 @@ export const handleSellHubOrder = async (
       apiResponse = await createOAuthOrder({
         service: body.type,
         id: body.customFields[0].value,
-        amount: amountToMultiply * 20,
+        amount: amountToMultiply * 100,
       });
 
     if (body.type === SELLHUB_TYPES_CONST.ONE_MONTH_BOOST) {
